@@ -9,12 +9,12 @@ Machine learning techniques have long been a theme of great interest in financia
 
 - Python 3.6
 - [gym](https://github.com/openai/gym)
-- [Keras 2.4.3] (https://pypi.org/project/Keras/)
+- [Keras 2.4.3](https://pypi.org/project/Keras/)
 - [TensorFlow 1.12.0](https://pypi.org/project/tensorflow/)
-- [ta 0.5.25] (https://pypi.org/project/ta/)
-- [Empyrical 0.5.5] (https://pypi.org/project/empyrical/)
-- [Scikit-learn 0.20.0] (https://pypi.org/project/scikit-learn/)
-- [Pytorch 1.7.0] (https://pytorch.org/)
+- [ta 0.5.25](https://pypi.org/project/ta/)
+- [Empyrical 0.5.5](https://pypi.org/project/empyrical/)
+- [Scikit-learn 0.20.0](https://pypi.org/project/scikit-learn/)
+- [Pytorch 1.7.0](https://pytorch.org/)
 
 ## Usage
 
@@ -45,15 +45,16 @@ To execute the RSLSTM-A, run the file: [ResnetCB.py](run/ResnetCB.py)
 This is a example of a plot when comparing all the results of the four models proposed in the article
 
 <p align="center">
-    <img src="https://github.com/leokan92/Contextual-bandit-Resnet-trading/images/test_btc.pdf" width="640"\>
+    <img src="https://github.com/leokan92/Contextual-bandit-Resnet-trading/images/test_btc.png" width="640"\>
 </p>
 
 
 ## References
 
 [Contextual Bandit Git](https://github.com/david-cortes/contextualbandits)
-[Resnet for Time-Series Classification](https://github.com/hfawaz/dl-4-tsc)
 
+[Resnet for Time-Series Classification](https://github.com/hfawaz/dl-4-tsc)
+	
 
 If you re-use this work, please cite:
 
