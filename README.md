@@ -45,7 +45,7 @@ To execute the RSLSTM-A, run the file: [ResnetCB.py](run/ResnetCB.py)
 This is a example of a plot when comparing all the results of the four models proposed in the article
 
 <p align="center">
-    <img src="https://github.com/leokan92/Contextual-bandit-Resnet-trading/images/test_btc.png" width="640"\>
+    <img src="https://raw.githubusercontent.com/leokan92/Contextual-bandit-Resnet-trading/main/images/test_btc.png?token=AINPHV254E7JCKAETMAPYVK72FHK6" width="640"\>
 </p>
 
 
