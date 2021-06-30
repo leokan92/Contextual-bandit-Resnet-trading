@@ -55,13 +55,13 @@ scaling = True
 
 reward_strategy = 'return'
 #reward_strategy = 'sharpe_ratio'
-input_data_file = path +r'\Data\Poloniex_DASHUSD_1h.csv'
+input_data_file = path +r'\Data\Poloniex_NXTBTC_1h.csv'
 #input_data_file = path+'/data/SPY.USUSD_Candlestick_1_Hour_BID_11.07.2017-13.03.2020.csv'
 comission = 0.00
 path = os.getcwd()
 #policy = np.load(path+r'\optimal_policy.npy')
 
-df = pd.read_csv(input_data_file)
+df = pd.read_csv(input_data_file,sep = ';')*100000
 #df = df.drop(['Symbol'], axis=1)
 #df = df.iloc[::-1]
 #df = add_indicators(df.reset_index())
@@ -73,9 +73,9 @@ train_df = df[:train_len]
 valid_df = df[train_len+M:train_len+M+valid_len]
 test_df = df[train_len+M+valid_len:]
 length= len(train_df)
-train_env = BitcoinTradingEnv(train_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length)
+train_env = BitcoinTradingEnv(train_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling=scaling)
 length= len(valid_df)
-valid_env = BitcoinTradingEnv(valid_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length)
+valid_env = BitcoinTradingEnv(valid_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling=scaling)
 length= len(test_df)
 test_env = BitcoinTradingEnv(test_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling=scaling)
 T = len(train_df)-M-3
