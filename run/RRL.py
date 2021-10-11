@@ -101,7 +101,7 @@ def rrl_run(train_env,valid_env,M,comission,mu,T,fold,n_epoch,asset_name):
     valid_S_hist = []
     #cum_sum_train = 0
     train_hist = []
-    max_valid = 0
+    max_valid = -1000000000
     
     print("Epoch loop start.")
     for e_index in range(0,n_epoch):

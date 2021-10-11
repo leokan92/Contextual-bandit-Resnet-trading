@@ -19,19 +19,19 @@ import os
 import numpy as np
 import sys
 # adding the path and importing the function
-path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\RRL non vectorized'
-sys.path.insert(0,path) # adding the code path
-path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\support'
-sys.path.insert(0,path) # adding the code path
-path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\A2C'
-sys.path.insert(0,path) # adding the code path
-path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\DQL'
-sys.path.insert(0,path) # adding the code path
-path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\IRL - RRL'
-sys.path.insert(0,path) # adding the code path
-path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\Contextual Bandit\contextualbandit-nocython'
-sys.path.insert(0,path) # adding the code path
-path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning'
+#path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\RRL non vectorized'
+#sys.path.insert(0,path) # adding the code path
+#path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\support'
+#sys.path.insert(0,path) # adding the code path
+#path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\A2C'
+#sys.path.insert(0,path) # adding the code path
+#path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\DQL'
+#sys.path.insert(0,path) # adding the code path
+#path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\IRL - RRL'
+#sys.path.insert(0,path) # adding the code path
+#path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\Contextual Bandit\contextualbandit-nocython'
+#sys.path.insert(0,path) # adding the code path
+path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Git\Contextual-bandit-Resnet-trading\run'
 sys.path.insert(0,path) # adding the code path
 #path =  os.getcwd()
 #sys.path.insert(0,path)
@@ -49,19 +49,20 @@ M  = 51
 mu = 1
 decay = 200
 n_epoch = 500
-asset_name = 'dash'
+asset_name = 'xmr' #This field should be changed
 gamma = 0.99
 scaling = True
 
 reward_strategy = 'return'
 #reward_strategy = 'sharpe_ratio'
-input_data_file = path +r'\Data\Poloniex_NXTBTC_1h.csv'
+input_data_file = path +r'\data\Poloniex_XMRUSD_1h.csv'
+#use x 10000 for NXTBTC
 #input_data_file = path+'/data/SPY.USUSD_Candlestick_1_Hour_BID_11.07.2017-13.03.2020.csv'
-comission = 0.00
+comission = 0.001
 path = os.getcwd()
 #policy = np.load(path+r'\optimal_policy.npy')
-
-df = pd.read_csv(input_data_file,sep = ';')*100000
+df = pd.read_csv(input_data_file,sep = ',')
+#df = pd.read_csv(input_data_file,sep = ';')
 #df = df.drop(['Symbol'], axis=1)
 #df = df.iloc[::-1]
 #df = add_indicators(df.reset_index())

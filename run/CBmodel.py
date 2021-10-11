@@ -42,7 +42,7 @@ def cb_model(train_env,valid_env,test_env,epochs,fold,asset_name):
     beta_prior_ucb = ((5./nchoices, 4), 2) # UCB gives higher numbers, thus the higher positive prior
     beta_prior_ts = ((2./np.log2(nchoices), 4), 2)
     
-    base_algorithm = LogisticRegression(solver='lbfgs', warm_start=True,max_iter = 200000, random_state = 3)
+    base_algorithm = LogisticRegression(solver='lbfgs', warm_start=True,max_iter = 100, random_state = 3)
     # Use neuralnetworks from sklearn
     model = BootstrappedTS(base_algorithm = base_algorithm, nchoices = nchoices)
     #model = AdaptiveGreedy(deepcopy(base_algorithm), nchoices=nchoices,decay_type='threshold',beta_prior = beta_prior)
@@ -116,7 +116,7 @@ def cb_model(train_env,valid_env,test_env,epochs,fold,asset_name):
     state_batch = []
     action_batch = []
     reward_batch = []
-    window_batch = 500000 # use sometimes
+    window_batch = 100000 # use sometimes
     #Train and validate data.
     for epoch in range(epochs):
         done = False
@@ -133,7 +133,12 @@ def cb_model(train_env,valid_env,test_env,epochs,fold,asset_name):
             state = next_state
             step += 1
         #if epoch%10==0: #update after some steps over the time series
-        model.fit(np.array(state_batch[-window_batch:]), np.array(action_batch[-window_batch:]), np.array(reward_batch[-window_batch:])) #generates another batch of actions to be used
+        #model.fit(np.array(state_batch[-window_batch:]), np.array(action_batch[-window_batch:]), np.array(reward_batch[-window_batch:])) #generates another batch of actions to be used
+        model.fit(np.array(state_batch), np.array(action_batch), np.array(reward_batch)) #generates another batch of actions to be used
+        if len(state_batch)>window_batch:
+            state_batch = state_batch[-window_batch:]
+            action_batch = action_batch[-window_batch:]
+            reward_batch = reward_batch[-window_batch:]
         toc = time.clock()
         
         

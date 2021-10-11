@@ -140,7 +140,7 @@ def a2c_run(train_env,valid_env,M,comission,fold,gamma,n_epoch,asset_name):
     valid_hist = []
     tic = time.clock()
     n_epochs = n_epoch
-    max_valid = 0
+    max_valid = -1000000000
     
     for i in range(n_epochs):
         done = False

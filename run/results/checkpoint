@@ -1,0 +1,2 @@
+model_checkpoint_path: "C:\\Users\\leona\\Google Drive\\USP\\Doutorado\\Artigo RRL-DeepLearning\\Git\\Contextual-bandit-Resnet-trading\\run/results/model_init.hdf5"
+all_model_checkpoint_paths: "C:\\Users\\leona\\Google Drive\\USP\\Doutorado\\Artigo RRL-DeepLearning\\Git\\Contextual-bandit-Resnet-trading\\run/results/model_init.hdf5"
