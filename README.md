@@ -1,8 +1,8 @@
-# Using Resnet architecture in the contextual bandit framework for financial asset trading
+# Outperforming algorithmic trading reinforcement learning systems: a supervised approach in the cryptocurrency market
 
 ## Abstract:
 
-Machine learning techniques have long been a theme of great interest in financial market literature. More recently, reinforcement learning and deep learning methods have been applied to the asset trading task achieving outstanding performances compared with the classical benchmarks. This article proposes a different view on the reinforcement learning approaches for the trading problem using the contextual bandit technique as a framework. We study the Thompson sampling technique's performance and suggest an adaptation of the Resnet architecture to propose the Resnet-LSTM actor (RSLSTM-A) to overcome the problems related to high noised finance fit the dynamic problem of financial asset trading. Furthermore, in this work, we show the increase of performance achieved by the classical Resnet architecture's modifications. We compare classical and recent approaches using the full reinforcement learning techniques such as recurrent reinforcement learning, deep q-learning, and advantage actor-critic. To perform the test, we simulated a financial market environment with the price time-series of the Bitcoin, Litecoin, Ethereum, Monero, and Dash cryptocurrencies. Finally, we show that our approach has a better overall performance when considering all the cryptocurrencies and present some analyzes of the features extracted from the Resnet neural networks.
+The interdisciplinary relationship between machine learning and financial markets has long been a theme of great interest among both research communities. Recently, reinforcement learning and deep learning methods gained prominence in the active asset trading task, aiming to achieve outstanding performances compared with classical benchmarks, such as the Buy and Hold strategy. This paper explores both supervised learning and reinforcement learning approaches applied to active asset trading, drawing attention to the benefits of both approaches. This work extends the comparison between the supervised approach and reinforcement learning by using state-of-the-art strategies in both techniques. We propose adopting the Resnet architecture, one of the best deep learning approaches for time-series classification, into the Resnet-LSTM actor (RSLSTM-A). We compare RSLSTM-A against classical and recent reinforcement learning techniques, such as recurrent reinforcement learning, deep Q-network, and advantage actor-critic. We simulated a currency exchange market environment with the price time-series of the Bitcoin, Litecoin, Ethereum, Monero, and Dash cryptocurrencies to run our tests. We show that our approach achieves better overall performance, confirming that supervised learning can outperform reinforcement learning for trading. We also present a graphic representation of the features extracted from the Resnet neural network to identify which type of characteristics each residual block generates.
 
 
 ## Requirements
@@ -59,11 +59,11 @@ This is a example of a plot when comparing all the results of the four models pr
 If you re-use this work, please cite:
 
 ```
-@article{Felizardo2020,
-  Title                    = {Using Resnet architecture in the contextual bandit framework for financial asset trading},
+@article{Felizardo2021,
+  Title                    = {Outperforming algorithmic trading reinforcement learning systems: a supervised approach in the cryptocurrency market},
   Author                   = {Felizardo, Leonardo},
   journal                  = {},
-  Year                     = {2020},
+  Year                     = {2021},
   volume                   = {},
   number                   = {},
   pages                    = {},
