@@ -28,7 +28,7 @@ $ pip install empyrical
 $ pip install -U scikit-learn
 ```
 
-Check pytorch address for the compatible version
+Check pytorch library for the compatible version
 
 To train all the models besides the RSLSTM-A run the file: [single-run.py](run/single-run.py)
 
@@ -40,6 +40,7 @@ input_data_file = path+'/data/Poloniex_DASHUSD_1h.csv'
 
 To execute the RSLSTM-A, run the file: [ResnetCB.py](run/ResnetCB.py)
 
+
 ## Plotting Results
 
 This is a example of a plot when comparing all the results of the four models proposed in the article
@@ -48,6 +49,7 @@ This is a example of a plot when comparing all the results of the four models pr
     <img src="https://raw.githubusercontent.com/leokan92/Contextual-bandit-Resnet-trading/main/images/test_btc.png?token=AINPHV254E7JCKAETMAPYVK72FHK6" width="640"\>
 </p>
 
+To reproduce the plots presented in the article, use the [plotting.py](plotting/plotting.py)
 
 ## References
 
