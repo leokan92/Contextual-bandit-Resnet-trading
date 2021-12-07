@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
 """
-Created on Thu Oct 22 15:29:58 2020
-
-@author: leona
+Resnet-LSTM actor (RSLSTM-A) training and test.
+This file contain the training ant the test algorithms used to train the RSLSTM-A.
+    All the parameters need to configure this experiment are presented in the "Initial parameters for the environment configuration" part
+    Please check our article in https://github.com/leokan92/Contextual-bandit-Resnet-trading for more details
 """
-
-
-
 
 ####################################################################
 # Import of the environment lib
@@ -20,11 +17,13 @@ from util.indicators import add_indicators
 from sklearn.preprocessing import MinMaxScaler
 import sklearn
 
+
 def MinMax(X):
     return (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))
 
 asset_list = ['btc','eth','ltc','dash','xmr','nxt']
 asset_path_list = ['BTCUSD','ETHUSD','LTCUSD','DASHUSD','XMRUSD','NXTBTC']
+
 for asset,asset_path in zip(asset_list,asset_path_list):
     ####################################################################
     # Initial parameters for the environment configuration
@@ -32,29 +31,24 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     M  = 51
     mu = 1
     gamma = 0.99
-    comission = 0.000
+    comission = 0.001
     ajusted_comission = comission
     np.random.seed(1)
     action_space = [-1,1]
     n_choices = len(action_space)
     scaling = True
-    forward_window_reward = 1
+    forward_window_reward = 80 # This is the foward reward window (M^f) used in the case of transaction costs. This reduce the frequency of trades and consider a future window of rewards to generate the labels for the classifier
     
-    #reward_strategy = 'differential_sharpe_ratio'
+    #reward_strategy = 'differential_sharpe_ratio' # Use this for the differential sharpe ratio reward function
     reward_strategy = 'returns'
     
     ####################################################################
     # Financial data Loading
     ####################################################################
     path  = os.getcwd()
-    #input_data_file = path+'/data/BTCUSD.Candlestick_1_Hour_BID_06.05.2017-13.03.2020.csv'
     input_data_file = path+'\data\Poloniex_'+asset_path+'_1h.csv'
-    #input_data_file = path+'/data/TS_SIN.csv'
-    #input_data_file = path+'/data/ETHUSD.Candlestick_1_Hour_BID_09.12.2017-08.05.2020.csv'
-    #input_data_file = path+'/data/LTCUSD_Candlestick_1_Hour_BID_01.09.2018-20.05.2020.csv'
     asset_name = asset
-    #df = pd.read_csv(input_data_file,sep = ';')
-    df = pd.read_csv(input_data_file)
+    df = pd.read_csv(input_data_file) # Depeding on the forma used in the csv files it may require the ";" separator
     df['Close'] = df['Close']
     
     
@@ -62,7 +56,7 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     # Environment creation based on the train, validation and test framework
     ####################################################################
     
-    valid_len = int(len(df) * 0.2/2) #change for the transfer learning
+    valid_len = int(len(df) * 0.2/2)
     test_len = valid_len
     train_len = int(len(df)) - valid_len*2
         
@@ -253,17 +247,15 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     
             # FINAL
     
-            gap_layer = keras.layers.GlobalAveragePooling1D()(output_block_3)
+            #gap_layer = keras.layers.GlobalAveragePooling1D()(output_block_3)
             #gap_layer = keras.layers.GlobalMaxPooling1D()(output_block_3)
             #output_block_3 = keras.layers.Conv1D(1, kernel_size=3, padding='same')(output_block_3)
             #flat = keras.layers.Flatten()(output_block_3)
             
             #dense1 = keras.layers.Dense(100, activation='relu')(flat)
-            # lstm_layer = keras.layers.LSTM(100)(output_block_3)
+            lstm_layer = keras.layers.LSTM(100)(output_block_3)
             
-            output_layer = keras.layers.Dense(nb_classes, activation='softmax')(gap_layer)
-            
-            # output_layer = keras.layers.Dense(nb_classes, activation='softmax')(lstm_layer)
+            output_layer = keras.layers.Dense(nb_classes, activation='softmax')(lstm_layer)
     
             model = keras.models.Model(inputs=input_layer, outputs=output_layer)
     
@@ -420,5 +412,5 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     plt.savefig('resnet_returns.png')
     plt.close()
     
-    np.save('resnet_pure_agent_returns'+'_'+str(forward_window_reward)+'_'+asset_name+'.npy',test_env.agent_returns)
-    np.save('resnet_pure_signals_'+str(forward_window_reward)+'_'+asset_name+'.npy',test_env.position_history)
+    np.save('resnet_agent_returns'+'_'+str(forward_window_reward)+'_'+asset_name+'.npy',test_env.agent_returns)
+    np.save('resnet_signals_'+str(forward_window_reward)+'_'+asset_name+'.npy',test_env.position_history)
