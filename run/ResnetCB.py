@@ -32,13 +32,13 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     M  = 51
     mu = 1
     gamma = 0.99
-    comission = 0.001
+    comission = 0.000
     ajusted_comission = comission
     np.random.seed(1)
     action_space = [-1,1]
     n_choices = len(action_space)
     scaling = True
-    forward_window_reward = 80
+    forward_window_reward = 1
     
     #reward_strategy = 'differential_sharpe_ratio'
     reward_strategy = 'returns'
@@ -253,15 +253,17 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     
             # FINAL
     
-            #gap_layer = keras.layers.GlobalAveragePooling1D()(output_block_3)
+            gap_layer = keras.layers.GlobalAveragePooling1D()(output_block_3)
             #gap_layer = keras.layers.GlobalMaxPooling1D()(output_block_3)
             #output_block_3 = keras.layers.Conv1D(1, kernel_size=3, padding='same')(output_block_3)
             #flat = keras.layers.Flatten()(output_block_3)
             
             #dense1 = keras.layers.Dense(100, activation='relu')(flat)
-            lstm_layer = keras.layers.LSTM(100)(output_block_3)
+            # lstm_layer = keras.layers.LSTM(100)(output_block_3)
             
-            output_layer = keras.layers.Dense(nb_classes, activation='softmax')(lstm_layer)
+            output_layer = keras.layers.Dense(nb_classes, activation='softmax')(gap_layer)
+            
+            # output_layer = keras.layers.Dense(nb_classes, activation='softmax')(lstm_layer)
     
             model = keras.models.Model(inputs=input_layer, outputs=output_layer)
     
@@ -418,5 +420,5 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     plt.savefig('resnet_returns.png')
     plt.close()
     
-    np.save('resnet_agent_returns'+'_'+str(forward_window_reward)+'_'+asset_name+'.npy',test_env.agent_returns)
-    np.save('resnet_signals_'+str(forward_window_reward)+'_'+asset_name+'.npy',test_env.position_history)
+    np.save('resnet_pure_agent_returns'+'_'+str(forward_window_reward)+'_'+asset_name+'.npy',test_env.agent_returns)
+    np.save('resnet_pure_signals_'+str(forward_window_reward)+'_'+asset_name+'.npy',test_env.position_history)

@@ -42,7 +42,8 @@ To execute the RSLSTM-A, run the file: [ResnetCB.py](run/ResnetCB.py)
 
 ## Plotting Results
 
-This is a example of a plot when comparing all the results of the four models proposed in the article
+This is a example of a plot when comparing all the results of the four models proposed in the article.
+All the plots and table generator are presented in the folder [plots and tables](run/plots and tables)
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/leokan92/Contextual-bandit-Resnet-trading/main/images/test_btc.png?token=AINPHV254E7JCKAETMAPYVK72FHK6" width="640"\>
@@ -56,17 +57,19 @@ This is a example of a plot when comparing all the results of the four models pr
 [Resnet for Time-Series Classification](https://github.com/hfawaz/dl-4-tsc)
 	
 
+## Citing the Project
+
 If you re-use this work, please cite:
 
-```
-@article{Felizardo2021,
-  Title                    = {Outperforming algorithmic trading reinforcement learning systems: a supervised approach in the cryptocurrency market},
-  Author                   = {Felizardo, Leonardo},
-  journal                  = {},
-  Year                     = {2021},
-  volume                   = {},
-  number                   = {},
-  pages                    = {},
+```bibtex
+@misc{Felizardo2021,
+  author = {Charles, P.W.D.},
+  title = {Outperforming algorithmic trading reinforcement learning systems: a supervised approach in the cryptocurrency market},
+  year = {2021},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/leokan92/Contextual-bandit-Resnet-trading}},
+  commit = {2452a2b786af53d210da3c4e42544d25ae06c1f6}
 }
 ```
 
