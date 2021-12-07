@@ -50,7 +50,6 @@ All the plots and table generator are presented in the `folder plots and tables`
     <img src="https://raw.githubusercontent.com/leokan92/Contextual-bandit-Resnet-trading/main/images/test_btc.png?token=AINPHV254E7JCKAETMAPYVK72FHK6" width="640"\>
 </p>
 
-To reproduce the plots presented in the article, use the [plotting.py](plotting/plotting.py)
 
 ## References
 
