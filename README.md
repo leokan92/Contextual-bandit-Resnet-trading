@@ -64,7 +64,7 @@ If you re-use this work, please cite:
 
 ```bibtex
 @misc{Felizardo2021,
-  author = {Charles, P.W.D.},
+  author = {Leonardo Felizardo},
   title = {Outperforming algorithmic trading reinforcement learning systems: a supervised approach in the cryptocurrency market},
   year = {2021},
   publisher = {GitHub},
