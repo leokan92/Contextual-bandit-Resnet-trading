@@ -7,11 +7,11 @@ Original file is located at
     https://colab.research.google.com/drive/1aZ4BlJO4rML-uOFpmyT1_xRsQEZJXdY4
 """
 
-from google.colab import drive
-drive.mount('/content/drive')
+# from google.colab import drive
+# drive.mount('/content/drive')
 
-!pip install empyrical
-!pip install ta
+#!pip install empyrical
+#!pip install ta
 
 # -*- coding: utf-8 -*-
 """
