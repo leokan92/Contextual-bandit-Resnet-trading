@@ -26,6 +26,7 @@ import matplotlib.pyplot as plt
 from collections import namedtuple
 from itertools import count
 from PIL import Image
+import os
 
 import torch
 import torch.nn as nn
@@ -251,8 +252,8 @@ def dql_run(train_env,valid_env,M,comission,decay,fold,gamma,n_epoch,asset_name)
     #env.render()
     env.close()
     
-    np.save('DQN_valid_hist'+str(fold)+'_'+asset_name+'.npy',valid_hist)
-    np.save('DQN_r_train_hist'+str(fold)+'_'+asset_name+'.npy',train_hist)
+    np.save(os.path.join(settings.RESULTS_DIR, 'DQN_valid_hist'+str(fold)+'_'+asset_name+'.npy'),valid_hist)
+    np.save(os.path.join(settings.RESULTS_DIR, 'DQN_r_train_hist'+str(fold)+'_'+asset_name+'.npy'),train_hist)
     ####################################################################################
     # TESTING
     ####################################################################################
@@ -305,8 +306,8 @@ def test_dql_run(test_env,M,comission,decay,fold,gamma,n_epoch,asset_name):
         state = next_state
         step += 1
     
-    np.save('DQN_agent_returns_'+str(fold)+'_'+asset_name+'.npy',env.agent_returns)
-    np.save('DQN_signals'+str(fold)+'_'+asset_name+'.npy',env.position_history)
+    np.save(os.path.join(settings.RESULTS_DIR, 'DQN_agent_returns_'+str(fold)+'_'+asset_name+'.npy'), env.agent_returns)
+    np.save(os.path.join(settings.RESULTS_DIR, 'DQN_signals'+str(fold)+'_'+asset_name+'.npy'), env.position_history)
     
     # plt.plot(np.cumsum(env.agent_returns))
     # plt.plot(np.cumsum(np.load('bh_returns.npy')))

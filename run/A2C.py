@@ -19,6 +19,7 @@ import gym
 from torch import nn
 import matplotlib.pyplot as plt
 import time
+import os
 
 def a2c_run(train_env,valid_env,M,comission,fold,gamma,n_epoch,asset_name): 
     
@@ -188,14 +189,14 @@ def a2c_run(train_env,valid_env,M,comission,fold,gamma,n_epoch,asset_name):
         if i > 3:
             if valid_hist[-1]>max_valid:
                 max_valid = valid_hist[-1]
-                torch.save(actor.state_dict(),'policy_A2C_parmeters.pt')
+                torch.save(actor.state_dict(), os.path.join('results', 'policy_A2C_parmeters.pt'))
         #############################################################  
         if i%1==0:
             toc = time.clock()
             print('|Episode: '+str(i)+'|Total reward: ' + str(round(np.sum(env.agent_returns),0))+'|Valid: '+str(round(np.sum(valid_env.agent_returns),0))+'|Time: '+str(round(toc-tic,0))+'s|')
     
-    np.save('A2C_valid_hist'+str(fold)+'_'+asset_name+'.npy',valid_hist)
-    np.save('A2C_r_train_hist'+str(fold)+'_'+asset_name+'.npy',train_hist) 
+    np.save(os.path.join(settings.RESULTS_DIR, 'A2C_valid_hist'+str(fold)+'_'+asset_name+'.npy'),valid_hist)
+    np.save(os.path.join(settings.RESULTS_DIR, 'A2C_r_train_hist'+str(fold)+'_'+asset_name+'.npy'),train_hist) 
 
 def test_a2c_run(test_env,M,comission,fold,gamma,n_epoch,asset_name):   
     
@@ -228,7 +229,7 @@ def test_a2c_run(test_env,M,comission,fold,gamma,n_epoch,asset_name):
     state = env.reset()
     steps = 0
     cum_reward_hist = []
-    actor.load_state_dict(torch.load('policy_A2C_parmeters.pt'))
+    actor.load_state_dict(torch.load(os.path.join(settings.RESULTS_DIR, 'policy_A2C_parmeters.pt')))
     while not done:
         probs = actor(t(state))
         dist = torch.distributions.Categorical(probs=probs)
@@ -240,6 +241,6 @@ def test_a2c_run(test_env,M,comission,fold,gamma,n_epoch,asset_name):
         steps += 1      
         state = next_state  
     
-    np.save('A2C_agent_returns'+str(fold)+'_'+asset_name+'.npy',env.agent_returns)
-    np.save('A2C_signals'+str(fold)+'_'+asset_name+'.npy',env.position_history)
+    np.save(os.path.join(settings.RESULTS_DIR, 'A2C_agent_returns'+str(fold)+'_'+asset_name+'.npy'),env.agent_returns)
+    np.save(os.path.join(settings.RESULTS_DIR, 'A2C_signals'+str(fold)+'_'+asset_name+'.npy'),env.position_history)
        

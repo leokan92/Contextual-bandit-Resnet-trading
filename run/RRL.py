@@ -8,7 +8,8 @@ import pandas as pd
 import numpy as np
 from empyrical import sortino_ratio, calmar_ratio, omega_ratio, sharpe_ratio
 import matplotlib.pyplot as plt
-import time 
+import time
+import os
 
 from env.BitcoinTradingEnv import BitcoinTradingEnv
 from util.indicators import add_indicators
@@ -18,43 +19,6 @@ from util.indicators import add_indicators
 # IMPLEMENTATION OF RRL
 ###################################################################################
 
-#M_rrl_original = 49
-#M  = 50
-#mu = 1
-#
-#reward_strategy = 'differential_sharpe_ratio'
-##reward_strategy = 'sharpe_ratio'
-#input_data_file = 'data/coinbase_hourly.csv'
-#comission = 0.00
-#
-#df = pd.read_csv(input_data_file)
-#df = df.drop(['Symbol'], axis=1)
-#df = df.iloc[::-1]
-#df = add_indicators(df.reset_index())
-#
-#valid_len = int(len(df) * 0.4/2)
-#train_len = int(len(df)) - valid_len*2
-#    
-#train_df = df[:train_len]
-#valid_df = df[train_len+M:train_len+M+valid_len]
-#test_df = df[train_len+M+valid_len:]
-#
-#length= len(train_df)
-#
-#
-#train_env = BitcoinTradingEnv(train_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length, forecast_len= 10, confidence_interval=1)
-#
-#
-#length= len(valid_df)
-#valid_env = BitcoinTradingEnv(valid_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length, forecast_len=10, confidence_interval=1)
-#
-#length= len(test_df)
-#test_env = BitcoinTradingEnv(test_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length, forecast_len=10, confidence_interval=1)
-#
-
-###################################################################################
-# IMPLEMENTATION OF RRL
-###################################################################################
 def rrl_run(train_env,valid_env,M,comission,mu,T,fold,n_epoch,asset_name):    
     
     print('Running RRL implementation')
@@ -209,8 +173,8 @@ def rrl_run(train_env,valid_env,M,comission,mu,T,fold,n_epoch,asset_name):
     
     print("Epoch loop end. Optimized sharp's ratio is " + str(S_opt) + ".")
     
-    np.save('RRL_valid_hist_f'+str(fold)+'_'+asset_name+'.npy',valid_hist)
-    np.save('RRL_train_hist_f'+str(fold)+'_'+asset_name+'.npy',train_hist)
+    np.save(os.path.join(settings.RESULTS_DIR, 'RRL_valid_hist_f'+str(fold)+'_'+asset_name+'.npy'), valid_hist)
+    np.save(os.path.join(settings.RESULTS_DIR, 'RRL_train_hist_f'+str(fold)+'_'+asset_name+'.npy'), train_hist)
     #np.save('S_epoch.npy',valid_S_hist)
     
     ####################################################################################
@@ -255,45 +219,5 @@ def test_rrl_run(test_env,M,comission,mu,T,fold,n_epoch,asset_name):
         F.append(action) # Append the action to the policy used   
         step += 1   
         
-    np.save('RRL_model_returns_f'+str(fold)+'_'+asset_name+'.npy',env.agent_returns)
-    np.save('RRL_signals_f'+str(fold)+'_'+asset_name+'.npy',F)
-
-#plt.plot(epoch_S)
-#plt.show()
-#
-##plt.plot(np.cumsum(np.load('model_returns.npy')),label = 'RRL')
-##plt.plot(np.cumsum(np.load('bh_returns.npy')),label = 'BH')
-##plt.legend()
-##plt.title('RRL model comparioson with BH')
-##plt.show()
-#
-#plt.plot(np.load('S_epoch.npy'),label = 'RRL')
-#plt.legend()
-#plt.title('Sharpe ratio evolution')
-#plt.show()
-#
-#plt.plot(valid_hist)
-#plt.title('Valid (cumsum) Evolution')
-#plt.title('Validation Metric evolution')
-#plt.show()
-#
-#signals = np.load('signals.npy')
-#window = 1000
-#t = np.linspace(0, len(signals[:window]), len(signals[:window]) , endpoint=True)
-#plt.step(t, signals[:window],color='k',label = 'RRL-signals')
-#plt.title('RRL Signals')
-#plt.show()
-
-####################################################################################
-# Comparing the new implementation with the original one
-####################################################################################
-
-# First we upload de original implmentation results and parameters:
-
-#S_original = np.load('rrl_S_epoch.npy')
-#w_original = np.load('rrl_w.npy')
-#
-#plt.plot(S_original,label='SR original')
-#plt.plot(epoch_S,label='SR new')
-#plt.show()
-
+    np.save(os.path.join(settings.RESULTS_DIR, 'RRL_model_returns_f'+str(fold)+'_'+asset_name+'.npy'), env.agent_returns)
+    np.save(os.path.join(settings.RESULTS_DIR, 'RRL_signals_f'+str(fold)+'_'+asset_name+'.npy'), F)

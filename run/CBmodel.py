@@ -15,20 +15,12 @@ import time
 import sys
 import matplotlib
 import matplotlib.pyplot as plt
-# adding the path and importing the function
-path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\RRL non vectorized'
-sys.path.insert(0,path) # adding the code path
-path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Algorithms\new_env_testing\support'
-sys.path.insert(0,path) # adding the code path
-path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning'
-sys.path.insert(0,path) # adding the code path
-#path =  os.getcwd()
-#sys.path.insert(0,path)
 from env.BitcoinTradingEnv import BitcoinTradingEnv
 from util.indicators import add_indicators
 from contextualbandits.online import AdaptiveGreedy, BootstrappedTS, ActiveExplorer
 from sklearn.linear_model import LogisticRegression
 from copy import deepcopy
+import settings
 
 ######################################################################
 # Model parameters
@@ -45,8 +37,7 @@ def cb_model(train_env,valid_env,test_env,epochs,fold,asset_name):
     base_algorithm = LogisticRegression(solver='lbfgs', warm_start=True,max_iter = 100, random_state = 3)
     # Use neuralnetworks from sklearn
     model = BootstrappedTS(base_algorithm = base_algorithm, nchoices = nchoices)
-    #model = AdaptiveGreedy(deepcopy(base_algorithm), nchoices=nchoices,decay_type='threshold',beta_prior = beta_prior)
-    
+   
     # Create X input
     
     train_hist = []
@@ -132,8 +123,7 @@ def cb_model(train_env,valid_env,test_env,epochs,fold,asset_name):
             reward_batch.append(binary_reward(reward))
             state = next_state
             step += 1
-        #if epoch%10==0: #update after some steps over the time series
-        #model.fit(np.array(state_batch[-window_batch:]), np.array(action_batch[-window_batch:]), np.array(reward_batch[-window_batch:])) #generates another batch of actions to be used
+
         model.fit(np.array(state_batch), np.array(action_batch), np.array(reward_batch)) #generates another batch of actions to be used
         if len(state_batch)>window_batch:
             state_batch = state_batch[-window_batch:]
@@ -153,7 +143,7 @@ def cb_model(train_env,valid_env,test_env,epochs,fold,asset_name):
             state = next_state#generates another batch of actions to be used
             step += 1
             
-        if epoch>50:
+        if epoch>3:
             if max_valid<(np.sum(valid_env.agent_returns)):
                 best_oracle = model._oracles
                 max_valid = np.sum(valid_env.agent_returns)
@@ -185,35 +175,9 @@ def cb_model(train_env,valid_env,test_env,epochs,fold,asset_name):
     toc = time.clock()
     print('Total train reward: ' + str(round(np.sum(train_env.agent_returns),0))+'|Test reward: '+str(round(np.sum(test_env.agent_returns),0))+'|Time: '+str(round(toc-tic,0))+'s|')
 
-    np.save('cbadapt_valid_hist'+str(fold)+'_'+asset_name+'.npy',valid_hist)
-    np.save('cbadapt_r_train_hist'+str(fold)+'_'+asset_name+'.npy',train_hist)
-    np.save('cbadapt_agent_returns'+str(fold)+'_'+asset_name+'.npy',test_env.agent_returns)
-    np.save('cbadapt_signals'+str(fold)+'_'+asset_name+'.npy',test_env.position_history)
-       
-# plt.plot(train_hist)
-# plt.title('Train accumulated reward x epochs')
-# plt.xlabel('epochs')
-# plt.ylabel('Reward sum')
-# plt.show()
-# plt.close()
-
-# plt.plot(valid_hist)
-# plt.title('Valid accumulated reward x epochs')
-# plt.xlabel('epochs')
-# plt.ylabel('Reward sum')
-# plt.show()
-# plt.close()
-
-# plt.plot(np.cumsum(test_env.agent_returns),label='CB')
-# plt.plot(np.cumsum(test_env.r[M:]),label = 'BH')
-# plt.title('Test returns x steps')
-# plt.xlabel('Step')
-# plt.ylabel('Reward')
-# plt.show()
-# plt.close()
-
-#'/home/jovyan/work/readonly/spx_holdings_and_spx_closeprice.csv
-
-
+    np.save(os.path.join(settings.RESULTS_DIR, 'cbadapt_valid_hist'+str(fold)+'_'+asset_name+'.npy'), valid_hist)
+    np.save(os.path.join(settings.RESULTS_DIR, 'cbadapt_r_train_hist'+str(fold)+'_'+asset_name+'.npy'), train_hist)
+    np.save(os.path.join(settings.RESULTS_DIR, 'cbadapt_agent_returns'+str(fold)+'_'+asset_name+'.npy'), test_env.agent_returns)
+    np.save(os.path.join(settings.RESULTS_DIR, 'cbadapt_signals'+str(fold)+'_'+asset_name+'.npy'), test_env.position_history)
 
     

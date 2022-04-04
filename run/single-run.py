@@ -8,27 +8,28 @@ import pandas as pd
 import os
 import numpy as np
 import sys
-path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Git\Contextual-bandit-Resnet-trading\run'
-sys.path.insert(0,path) # adding the code path
+# path = r'C:\Users\leona\Google Drive\USP\Doutorado\Artigo RRL-DeepLearning\Git\Contextual-bandit-Resnet-trading\run'
+# sys.path.insert(0,path) # adding the code path
 from env.BitcoinTradingEnv import BitcoinTradingEnv
 from util.indicators import add_indicators
 from RRL import rrl_run,test_rrl_run
 from A2C import a2c_run,test_a2c_run
 from DQL import dql_run,test_dql_run
 from CBmodel import cb_model
+import settings
 
 # Experiment parameters
 
 M  = 51 # Past window
 mu = 1 # mu: number of assetes traded
 decay = 200 # epslon decay for exploration purposes
-n_epoch = 500 # number of RL episodes (here we call epochs)
+n_epoch = 5 # number of RL episodes (here we call epochs)
 asset_name = 'xmr' #This field should be changed to test other assets
 gamma = 0.99 # discount factor used in RL algorithms
 scaling = True # to scale the input date (space state)
 
 reward_strategy = 'return' # check the environment for more reward functions
-input_data_file = path +r'\data\Poloniex_XMRUSD_1h.csv'
+input_data_file = os.path.join(settings.DATA_DIR, 'Poloniex_XMRUSD_1h.csv')
 comission = 0.001
 path = os.getcwd()
 df = pd.read_csv(input_data_file,sep = ',')
@@ -55,6 +56,8 @@ T = len(train_df)-M-3
 # Calling the RL function in the same root of this folder
 np.save('bh_'+'_'+'_'+asset_name,test_env.r[M+2:-(M+1)])
 
+cb_model(train_env,valid_env,test_env,n_epoch,'_',asset_name)
+
 a2c_run(train_env,valid_env,M,comission,'_',gamma,n_epoch,asset_name)
 test_a2c_run(test_env,M,comission,'_',gamma,n_epoch,asset_name)
 
@@ -63,8 +66,6 @@ test_dql_run(test_env,M,comission,decay,'_',gamma,n_epoch,asset_name)
 
 rrl_run(train_env,valid_env,M,comission,mu,T,'_',n_epoch,asset_name)
 test_rrl_run(test_env,M,comission,mu,T,'_',n_epoch,asset_name)
-
-cb_model(train_env,valid_env,test_env,n_epoch,'_',asset_name)
 
 
     

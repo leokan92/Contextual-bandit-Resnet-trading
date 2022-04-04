@@ -21,8 +21,8 @@ import sklearn
 def MinMax(X):
     return (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))
 
-asset_list = ['btc','eth','ltc','dash','xmr','nxt']
-asset_path_list = ['BTCUSD','ETHUSD','LTCUSD','DASHUSD','XMRUSD','NXTBTC']
+asset_list = ['xmr']
+asset_path_list = ['XMRUSD']
 
 for asset,asset_path in zip(asset_list,asset_path_list):
     ####################################################################
@@ -46,7 +46,7 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     # Financial data Loading
     ####################################################################
     path  = os.getcwd()
-    input_data_file = path+'\data\Poloniex_'+asset_path+'_1h.csv'
+    input_data_file = os.path.join('data', f'Poloniex_{asset_path}_1h.csv')
     asset_name = asset
     df = pd.read_csv(input_data_file) # Depeding on the forma used in the csv files it may require the ";" separator
     df['Close'] = df['Close']
@@ -166,12 +166,11 @@ for asset,asset_path in zip(asset_list,asset_path_list):
                     self.model.summary()
                 self.verbose = verbose
                 if load_weights == True:
-                    self.model.load_weights(self.output_directory
+                    self.model.load_weights(os.path.join(self.output_directory
                                             .replace('resnet_augment', 'resnet')
-                                            .replace('TSC_itr_augment_x_10', 'TSC_itr_10')
-                                            + '/model_init.hdf5')
+                                            .replace('TSC_itr_augment_x_10', 'TSC_itr_10'), '/model_init.hdf5'))
                 else:
-                    self.model.save_weights(self.output_directory + 'model_init.hdf5')
+                    self.model.save_weights(os.path.join(self.output_directory, 'model_init.hdf5'))
             return
     
         def build_model(self, input_shape, nb_classes):
@@ -264,7 +263,7 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     
             reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='loss', factor=0.5, patience=5, min_lr=0.001)
     
-            file_path = self.output_directory + 'best_model.hdf5'
+            file_path = os.path.join(self.output_directory, 'best_model.hdf5')
     
             model_checkpoint = keras.callbacks.ModelCheckpoint(filepath=file_path, monitor='val_loss',
                                                                save_best_only=True)
@@ -279,7 +278,7 @@ for asset,asset_path in zip(asset_list,asset_path_list):
                 exit()
             # x_val and y_val are only used to monitor the test loss and NOT for training
             batch_size = 128
-            nb_epochs = 50
+            nb_epochs = 3
             
             # class_weight = sklearn.utils.class_weight.compute_class_weight( 'balanced',classes = np.unique(np.argmax(y_train,-1)),y=np.argmax(y_train,-1))
             
@@ -292,13 +291,13 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     
             duration = time.time() - start_time
     
-            self.model.save(self.output_directory + 'last_model.hdf5')
+            self.model.save(os.path.join(self.output_directory, 'last_model.hdf5'))
     
             y_pred = self.predict(x_val, y_true, x_train, y_train, y_val,
                                   return_df_metrics=False)
     
             # save predictions
-            np.save(self.output_directory + 'y_pred.npy', y_pred)
+            np.save(os.path.join(self.output_directory, 'y_pred.npy'), y_pred)
     
             # convert the predicted from binary to integer
             y_pred = np.argmax(y_pred, axis=1)
@@ -308,7 +307,7 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     
             
             hist_df = pd.DataFrame(self.hist.history)
-            hist_df.to_csv(output_directory + 'history.csv', index=False)
+            hist_df.to_csv(os.path.join(output_directory, 'history.csv'), index=False)
     
             keras.backend.clear_session()
     
@@ -316,7 +315,7 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     
         def predict(self, x_test, y_true, x_train, y_train, y_test, return_df_metrics=True):
             start_time = time.time()
-            model_path = self.output_directory + 'best_model.hdf5'
+            model_path = os.path.join(self.output_directory, 'best_model.hdf5')
             model = keras.models.load_model(model_path)
             y_pred = model.predict(x_test)
             if return_df_metrics:
@@ -325,10 +324,10 @@ for asset,asset_path in zip(asset_list,asset_path_list):
                 return df_metrics
             else:
                 test_duration = time.time() - start_time
-                save_test_duration(self.output_directory + 'test_duration.csv', test_duration)
+                save_test_duration(os.path.join(self.output_directory, 'test_duration.csv'), test_duration)
                 return y_pred
     
-    output_directory = os.getcwd()+'/results/'
+    output_directory = os.path.join('results')
     
     input_shape = x_train.shape[1:]
         
@@ -363,7 +362,7 @@ for asset,asset_path in zip(asset_list,asset_path_list):
         
     state = test_env.reset()
     done = False
-    model_pred = keras.models.load_model(os.getcwd()+'/results/best_model.hdf5')
+    model_pred = keras.models.load_model(os.path.join(settings.RESULTS_DIR, 'best_model.hdf5'))
     #model_pred = model.model
     action_prob_hist = []
     delayer_counter = 0
@@ -412,5 +411,5 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     plt.savefig('resnet_returns.png')
     plt.close()
     
-    np.save('resnet_agent_returns'+'_'+str(forward_window_reward)+'_'+asset_name+'.npy',test_env.agent_returns)
-    np.save('resnet_signals_'+str(forward_window_reward)+'_'+asset_name+'.npy',test_env.position_history)
+    np.save(os.path.join(settings.RESULTS_DIR, 'resnet_agent_returns'+'_'+str(forward_window_reward)+'_'+asset_name+'.npy'), test_env.agent_returns)
+    np.save(os.path.join(settings.RESULTS_DIR, 'resnet_signals_'+str(forward_window_reward)+'_'+asset_name+'.npy'), test_env.position_history)
