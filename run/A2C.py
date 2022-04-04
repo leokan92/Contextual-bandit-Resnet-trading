@@ -21,6 +21,8 @@ import matplotlib.pyplot as plt
 import time
 import os
 
+import settings
+
 def a2c_run(train_env,valid_env,M,comission,fold,gamma,n_epoch,asset_name): 
     
     ########################################################################################

@@ -17,6 +17,8 @@ from util.indicators import add_indicators
 from sklearn.preprocessing import MinMaxScaler
 import sklearn
 
+import settings
+
 
 def MinMax(X):
     return (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))
@@ -46,7 +48,7 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     # Financial data Loading
     ####################################################################
     path  = os.getcwd()
-    input_data_file = os.path.join('data', f'Poloniex_{asset_path}_1h.csv')
+    input_data_file = os.path.join(settings.DATA_DIR, f'Poloniex_{asset_path}_1h.csv')
     asset_name = asset
     df = pd.read_csv(input_data_file) # Depeding on the forma used in the csv files it may require the ";" separator
     df['Close'] = df['Close']

@@ -13,6 +13,7 @@ import os
 
 from env.BitcoinTradingEnv import BitcoinTradingEnv
 from util.indicators import add_indicators
+import settings
 
 
 ###################################################################################

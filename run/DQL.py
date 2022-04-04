@@ -28,6 +28,8 @@ from itertools import count
 from PIL import Image
 import os
 
+import settings
+
 import torch
 import torch.nn as nn
 import torch.optim as optim

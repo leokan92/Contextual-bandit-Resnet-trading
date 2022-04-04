@@ -20,6 +20,7 @@ from util.indicators import add_indicators
 from contextualbandits.online import AdaptiveGreedy, BootstrappedTS, ActiveExplorer
 from sklearn.linear_model import LogisticRegression
 from copy import deepcopy
+
 import settings
 
 ######################################################################
