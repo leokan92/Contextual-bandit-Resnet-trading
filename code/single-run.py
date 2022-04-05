@@ -24,13 +24,13 @@ M  = 51 # Past window
 mu = 1 # mu: number of assetes traded
 decay = 200 # epslon decay for exploration purposes
 n_epoch = 150 # number of RL episodes (here we call epochs)
-asset_name = 'btc' #This field should be changed to test other assets
+asset_name = 'nxt' #This field should be changed to test other assets
 gamma = 0.99 # discount factor used in RL algorithms
 scaling = True # to scale the input date (space state)
 training_mode = True
 
 reward_strategy = 'return' # check the environment for more reward functions
-input_data_file = os.path.join(settings.DATA_DIR, 'Poloniex_BTCUSD_1h.csv')
+input_data_file = os.path.join(settings.DATA_DIR, 'Poloniex_NXTBTC_1h.csv')
 comission = 0.001
 path = os.getcwd()
 df = pd.read_csv(input_data_file,sep = ',')
@@ -55,7 +55,7 @@ T = len(train_df)-M-3
 
 
 # Calling the RL function in the same root of this folder
-np.save('bh_'+'_'+'_'+asset_name,test_env.r[M+2:-(M+1)])
+np.save(os.path.join(settings.RESULTS_DIR,'bh_'+'_'+'_'+asset_name),test_env.r[M+2:-(M+1)])
 
 
 
