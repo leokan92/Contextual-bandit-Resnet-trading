@@ -22,7 +22,8 @@ Created on Sat May 16 19:48:40 2020
 """
 
 #path_input = r'/content/drive/MyDrive/USP/Doutorado/Artigo RRL-DeepLearning/Results/results - tables;crypto;extended datas/'
-path_input = r'/content/drive/MyDrive/USP/Doutorado/Artigo RRL-DeepLearning/Results/results - tables;crypto;extended datastc0.0001/'
+import settings
+path_input = settings.DATA_DIR
 path_data = r'/content/drive/MyDrive/USP/Doutorado/Artigo RRL-DeepLearning/Git/Contextual-bandit-Resnet-trading/run'
 import matplotlib
 import matplotlib.pyplot as plt
@@ -31,7 +32,9 @@ import pandas as pd
 import seaborn as sns
 import math
 from scipy.stats import wilcoxon
-from BitcoinTradingEnv import BitcoinTradingEnv as btenv
+from env import BitcoinTradingEnv
+import os
+
 
 def moving_average(data_set, periods=3):
     weights = np.ones(periods) / periods
@@ -55,7 +58,7 @@ def calculate_SR(series,init_value):
 ############################################################
 # Load first datas
 ############################################################
-assets = ['btc','dash','eth','ltc','nxt','xmr']
+assets = ['btc']
 
 ######################################################################################################################
 # Create table for cumlateive returns
@@ -74,28 +77,30 @@ mu = 1
 n_epoch = 600
 decay = 200
 reward_strategy = 'return'
+scaling = True
+
+window = 80
 
 
 input_datas = []
 
-input_datas.append(path_data+'/data/Poloniex_BTCUSD_1h.csv')
-input_datas.append(path_data+'/data/Poloniex_DASHUSD_1h.csv')
-input_datas.append(path_data+'/data/Poloniex_ETHUSD_1h.csv')
-input_datas.append(path_data+'/data/Poloniex_LTCUSD_1h.csv')
-input_datas.append(path_data+'/data/Poloniex_NXTBTC_1h.csv')
-input_datas.append(path_data+'/data/Poloniex_XMRUSD_1h.csv')
+input_datas.append(os.path.join(path_data,'Poloniex_BTCUSD_1h.csv'))
+input_datas.append(os.path.join(path_data,'Poloniex_DASHUSD_1h.csv'))
+input_datas.append(os.path.join(path_data,'Poloniex_ETHUSD_1h.csv'))
+input_datas.append(os.path.join(path_data,'Poloniex_LTCUSD_1h.csv'))
+input_datas.append(os.path.join(path_data,'Poloniex_NXTBTC_1h.csv'))
+input_datas.append(os.path.join(path_data,'Poloniex_XMRUSD_1h.csv'))
 
 
 for asset_name, data_name in zip(assets, input_datas):
-    data = pd.read_csv(data_name)
-    valid_len = int(len(data) * 0.1/2)
+    valid_len = int(len(df) * 0.2/2)
     test_len = valid_len
-    train_len = int(len(data)) - valid_len*2   
-    test_df = data[train_len+M+valid_len:]
-    length = len(test_df)
-    test_env = btenv(test_df, initial_balance=10000, commission=comission,
-                     reward_func=reward_strategy, M = M , mu = mu,length = length,
-                     scaling = False)
+    train_len = int(len(df)) - valid_len*2   
+    train_df = df[:train_len]
+    valid_df = df[train_len+M:train_len+M+valid_len]
+    test_df = df[train_len+M+valid_len:]
+    length= len(train_df)
+    test_env = BitcoinTradingEnv(test_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling=scaling)
     if asset_name == 'nxt':
       firs_value_test = test_env.df['Close'][0]*10000
     else:
@@ -104,7 +109,7 @@ for asset_name, data_name in zip(assets, input_datas):
     dql = np.sum(np.cumsum(np.load(path_input+'DQN_agent_returns___'+asset_name+'.npy')))
     rrl = np.sum(np.cumsum(np.load(path_input+'RRL_model_returns_f__'+asset_name+'.npy')))
     bts = np.sum(np.cumsum(np.load(path_input+'cbadapt_agent_returns__'+asset_name+'.npy')))
-    resnet = np.sum(np.cumsum(np.load(path_input+'resnet_agent_returns__'+asset_name+'.npy')))
+    resnet = np.sum(np.cumsum(np.load(path_input+'resnet_agent_returns_window_'+asset_name+'.npy')))
     bh = np.sum(np.cumsum(np.load(path_input+'bh___'+asset_name+'.npy')))
     if asset_name == 'eth':
       df_temp = pd.DataFrame({' ':'ACR','Asset':asset_name,'BH':bh,'RRL':rrl,'DQL':dql,'A2C':a2c,'BSTS':bts,'RSLSTM-A':resnet}, index=[0])
@@ -113,15 +118,14 @@ for asset_name, data_name in zip(assets, input_datas):
     df = df.append(df_temp)
 
 for asset_name, data_name in zip(assets, input_datas):
-    data = pd.read_csv(data_name)
-    valid_len = int(len(data) * 0.1/2)
+    valid_len = int(len(df) * 0.2/2)
     test_len = valid_len
-    train_len = int(len(data)) - valid_len*2   
-    test_df = data[train_len+M+valid_len:]
-    length = len(test_df)
-    test_env = btenv(test_df, initial_balance=10000, commission=comission,
-                     reward_func=reward_strategy, M = M , mu = mu,length = length,
-                     scaling = False)
+    train_len = int(len(df)) - valid_len*2   
+    train_df = df[:train_len]
+    valid_df = df[train_len+M:train_len+M+valid_len]
+    test_df = df[train_len+M+valid_len:]
+    length= len(train_df)
+    test_env = BitcoinTradingEnv(test_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling=scaling)
     if asset_name == 'nxt':
       firs_value_test = test_env.df['Close'][0]*10000
     else:
@@ -130,7 +134,7 @@ for asset_name, data_name in zip(assets, input_datas):
     dql = calculate_SR(np.load(path_input+'DQN_agent_returns___'+asset_name+'.npy'),firs_value_test)
     rrl = calculate_SR(np.load(path_input+'RRL_model_returns_f__'+asset_name+'.npy'),firs_value_test)
     bts = calculate_SR(np.load(path_input+'cbadapt_agent_returns__'+asset_name+'.npy'),firs_value_test)
-    resnet = calculate_SR(np.load(path_input+'resnet_agent_returns__'+asset_name+'.npy'),firs_value_test)
+    resnet = calculate_SR(np.load(path_input+'resnet_agent_returns_window_'+asset_name+'.npy'),firs_value_test)
     bh = calculate_SR(np.load(path_input+'bh___'+asset_name+'.npy'),firs_value_test)
     if asset_name == 'eth':
       df_temp = pd.DataFrame({' ':'SR','Asset':asset_name,'BH':bh,'RRL':rrl,'DQL':dql,'A2C':a2c,'BSTS':bts,'RSLSTM-A':resnet}, index=[0])
@@ -139,15 +143,14 @@ for asset_name, data_name in zip(assets, input_datas):
     df = df.append(df_temp)
 
 for asset_name, data_name in zip(assets, input_datas):
-    data = pd.read_csv(data_name)
-    valid_len = int(len(data) * 0.1/2)
+    valid_len = int(len(df) * 0.2/2)
     test_len = valid_len
-    train_len = int(len(data)) - valid_len*2   
-    test_df = data[train_len+M+valid_len:]
-    length = len(test_df)
-    test_env = btenv(test_df, initial_balance=10000, commission=comission,
-                     reward_func=reward_strategy, M = M , mu = mu,length = length,
-                     scaling = False)
+    train_len = int(len(df)) - valid_len*2   
+    train_df = df[:train_len]
+    valid_df = df[train_len+M:train_len+M+valid_len]
+    test_df = df[train_len+M+valid_len:]
+    length= len(train_df)
+    test_env = BitcoinTradingEnv(test_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling=scaling)
     if asset_name == 'nxt':
       firs_value_test = test_env.df['Close'][0]*10000
     else:
@@ -156,7 +159,7 @@ for asset_name, data_name in zip(assets, input_datas):
     dql = calculate_AR(np.load(path_input+'DQN_agent_returns___'+asset_name+'.npy'),firs_value_test)
     rrl = calculate_AR(np.load(path_input+'RRL_model_returns_f__'+asset_name+'.npy'),firs_value_test)
     bts = calculate_AR(np.load(path_input+'cbadapt_agent_returns__'+asset_name+'.npy'),firs_value_test)
-    resnet = calculate_AR(np.load(path_input+'resnet_agent_returns__'+asset_name+'.npy'),firs_value_test)    
+    resnet = calculate_AR(np.load(path_input+'resnet_agent_returns_window_'+asset_name+'.npy'),firs_value_test)    
     bh = calculate_AR(np.load(path_input+'bh___'+asset_name+'.npy'),firs_value_test)
     if asset_name == 'eth':
       df_temp = pd.DataFrame({' ':'AR','Asset':asset_name,'BH':bh,'RRL':rrl,'DQL':dql,'A2C':a2c,'BSTS':bts,'RSLSTM-A':resnet}, index=[0])
