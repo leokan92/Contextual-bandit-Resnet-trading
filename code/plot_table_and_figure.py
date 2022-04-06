@@ -20,7 +20,7 @@ path = settings.RESULTS_DIR
 #Plotting results for one asset:
 ##########################################
 
-asset_name = 'btc'
+asset_name = 'nxt'
 
 fold = '_'
 window = '80'
@@ -81,7 +81,7 @@ def calculate_SR(series,init_value):
 ############################################################
 # Load first datas
 ############################################################
-assets = ['btc']
+assets = ['nxt']
 
 ######################################################################################################################
 # Create table for cumlateive returns
@@ -125,7 +125,7 @@ for asset_name, data_name in zip(assets, input_datas):
     length= len(train_df)
     test_env = BitcoinTradingEnv(test_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling=scaling)
     if asset_name == 'nxt':
-      firs_value_test = test_env.df['Close'][0]*10000
+      firs_value_test = test_env.df['Close'][0]
     else:
       firs_value_test = test_env.df['Close'][0]
     a2c = np.sum(np.cumsum(np.load(os.path.join(path_input,'A2C_agent_returns__'+asset_name+'.npy'))))
@@ -151,8 +151,7 @@ for asset_name, data_name in zip(assets, input_datas):
     length= len(train_df)
     test_env = BitcoinTradingEnv(test_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling=scaling)
     if asset_name == 'nxt':
-      firs_value_test = test_env.df['Close'][0]*10000
-    else:
+      firs_value_test = test_env.df['Close'][0]
       firs_value_test = test_env.df['Close'][0]
     a2c = calculate_SR(np.load(os.path.join(path_input,'A2C_agent_returns__'+asset_name+'.npy')),firs_value_test)
     dql = calculate_SR(np.load(os.path.join(path_input,'DQN_agent_returns___'+asset_name+'.npy')),firs_value_test)
@@ -177,7 +176,7 @@ for asset_name, data_name in zip(assets, input_datas):
     length= len(train_df)
     test_env = BitcoinTradingEnv(test_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling=scaling)
     if asset_name == 'nxt':
-      firs_value_test = test_env.df['Close'][0]*10000
+      firs_value_test = test_env.df['Close'][0]
     else:
       firs_value_test = test_env.df['Close'][0]
     a2c = calculate_AR(np.load(os.path.join(path_input,'A2C_agent_returns__'+asset_name+'.npy')),firs_value_test)

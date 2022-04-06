@@ -23,8 +23,8 @@ import settings
 def MinMax(X):
     return (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))
 
-asset_list = ['btc']
-asset_path_list = ['BTCUSD']
+asset_list = ['nxt']
+asset_path_list = ['NXTBTC']
 
 for asset,asset_path in zip(asset_list,asset_path_list):
     ####################################################################
