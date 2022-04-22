@@ -31,7 +31,7 @@ training_mode = True
 
 reward_strategy = 'return' # check the environment for more reward functions
 input_data_file = os.path.join(settings.DATA_DIR, 'Poloniex_NXTBTC_1h.csv')
-comission = 0.001
+comission = 0.000
 path = os.getcwd()
 df = pd.read_csv(input_data_file,sep = ',')
 

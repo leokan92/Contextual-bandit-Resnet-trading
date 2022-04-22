@@ -65,22 +65,21 @@ def moving_average(data_set, periods=3):
 
 def calculate_AR(series,init_value):  
     if math.isnan(((((np.sum(series)+init_value)/init_value+1)**(1/len(series))))**365-1):
-      return 0
+      return -((((-np.sum(series)+init_value)/init_value+1)**(1/len(series))))**365-1
     else:
       return ((((np.sum(series)+init_value)/init_value+1)**(1/len(series))))**365-1
-    #return ((((np.sum(series)+init_value)/init_value+1)**(1/len(series))))**365-1
     
 def calculate_SR(series,init_value):
     risk_free = 0.0001
     if math.isnan((((((np.sum(series)+init_value)/init_value+1)**(1/len(series))))-1-risk_free)/np.std(series)*np.sqrt(365)):
-      return 0
+      return -(((((-np.sum(series)+init_value)/init_value+1)**(1/len(series))))-1-risk_free)/np.std(series)*np.sqrt(365)
     else:
       return (((((np.sum(series)+init_value)/init_value+1)**(1/len(series))))-1-risk_free)/np.std(series)*np.sqrt(365)
-    #return (((((np.sum(series)+init_value)/init_value+1)**(1/len(series))))-1-risk_free)/np.std(series)*np.sqrt(365)
 
 ############################################################
 # Load first datas
 ############################################################
+
 assets = ['nxt']
 
 ######################################################################################################################

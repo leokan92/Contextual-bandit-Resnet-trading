@@ -33,13 +33,13 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     M  = 51
     mu = 1
     gamma = 0.99
-    comission = 0.001
+    comission = 0.00
     ajusted_comission = comission
     np.random.seed(1)
     action_space = [-1,1]
     n_choices = len(action_space)
     scaling = True
-    forward_window_reward = 80 # This is the foward reward window (M^f) used in the case of transaction costs. This reduce the frequency of trades and consider a future window of rewards to generate the labels for the classifier
+    forward_window_reward = 0 # This is the foward reward window (M^f) used in the case of transaction costs. This reduce the frequency of trades and consider a future window of rewards to generate the labels for the classifier
     training_mode = True
     
     #reward_strategy = 'differential_sharpe_ratio' # Use this for the differential sharpe ratio reward function
