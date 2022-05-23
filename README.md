@@ -18,7 +18,7 @@ The interdisciplinary relationship between machine learning and financial market
 
 ## Usage
 
-First, install prerequisites
+First, install prerequisites.
 
 ```
 $ pip install gym
