@@ -13,28 +13,35 @@ import seaborn as sns
 import settings
 import os
 
-path = settings.RESULTS_DIR
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath('__file__')))  
+LOG_DIR = os.path.join(BASE_DIR,'code','params')
+RESULTS_DIR = os.path.join(BASE_DIR,'code','results')
 
+#DQN_agent_returns_xrp.npy
+
+plt.rcParams["font.family"] = "Times New Roman"
 
 ##########################################
 #Plotting results for one asset:
 ##########################################
 
-asset_name = 'nxt'
+asset_name = 'eth'
 
 fold = '_'
-window = '80'
-PATH = path
-DQN = np.cumsum(np.load(os.path.join(PATH,'DQN_agent_returns_'+str(fold)+'_'+asset_name+'.npy')))
+window = '60'
+PATH = RESULTS_DIR
+DQN = np.cumsum(np.load(os.path.join(PATH,'DQN_agent_returns_'+asset_name+'.npy')))
 RRL = np.cumsum(np.load(os.path.join(PATH,'RRL_model_returns_f'+str(fold)+'_'+asset_name+'.npy')))
-A2C = np.cumsum(np.load(os.path.join(PATH,'A2C_agent_returns'+str(fold)+'_'+asset_name+'.npy')))
+A2C = np.cumsum(np.load(os.path.join(PATH,'A2C_agent_returns_'+asset_name+'.npy')))
+PPO = np.cumsum(np.load(os.path.join(PATH,'PPO_agent_returns_'+asset_name+'.npy')))
 BSTS = np.cumsum(np.load(os.path.join(PATH,'cbadapt_agent_returns'+str(fold)+'_'+asset_name+'.npy')))
 RESNET = np.cumsum(np.load(os.path.join(PATH,'resnet_agent_returns'+'_'+window+'_'+asset_name+'.npy')))
 BH = np.cumsum(np.load(os.path.join(PATH,'bh_'+str(fold)+'_'+asset_name+'.npy')))
-#fig = plt.figure(figsize=(17,6))
+fig = plt.figure(figsize=(17,5))
 plt.plot(DQN, 'k', color='grey',linestyle='-',markevery = 140,marker = 'o',label = 'DQL')
 plt.plot(RRL, 'k', color='grey',linestyle='-',markevery = 140,marker = '<',label = 'RRL')
 plt.plot(A2C, 'k', color='grey',linestyle='-',markevery = 140,marker = 'x',label = 'A2C')
+plt.plot(PPO, 'k', color='grey',linestyle='-',markevery = 140,marker = '*',label = 'PPO')
 plt.plot(BSTS, 'k', color='grey',linestyle='-',markevery = 140,marker = 'd',label = 'BTS')
 plt.plot(RESNET, 'k', color='green',linestyle='-.',label = 'RSLSTM-A')
 plt.plot(BH, 'k', color='red',label = 'B&H')
@@ -44,7 +51,7 @@ plt.ylabel('Profit and Loss')
 plt.xlabel('Time steps')
 #plt.imshow(img, alpha=0.25)
 #plt.savefig(path +'results - tables;crypto;extended datas/'+'test_all_assets.pdf', bbox_inches='tight')
-plt.savefig(os.path.join(settings.RESULTS_DIR,'plot.png'), bbox_inches='tight')
+plt.savefig(os.path.join(RESULTS_DIR,'plot.png'), bbox_inches='tight')
 
 ##########################################
 #Generating table results for one asset:

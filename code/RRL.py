@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import time
 import os
 
-from env.BitcoinTradingEnv import BitcoinTradingEnv
+from env.TradingEnv import TradingEnv
 from util.indicators import add_indicators
 import settings
 
