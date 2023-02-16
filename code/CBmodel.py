@@ -15,7 +15,7 @@ import time
 import sys
 import matplotlib
 import matplotlib.pyplot as plt
-from env.BitcoinTradingEnv import BitcoinTradingEnv
+from env.TradingEnv import TradingEnv
 from util.indicators import add_indicators
 from contextualbandits.online import AdaptiveGreedy, BootstrappedTS, ActiveExplorer
 from sklearn.linear_model import LogisticRegression

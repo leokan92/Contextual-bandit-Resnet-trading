@@ -12,7 +12,7 @@ import pandas as pd
 import os
 import numpy as np
 import sys
-from env.BitcoinTradingEnv import BitcoinTradingEnv
+from env.TradingEnv import TradingEnv
 from util.indicators import add_indicators
 from sklearn.preprocessing import MinMaxScaler
 import sklearn
@@ -20,11 +20,12 @@ import sklearn
 import settings
 
 
+
 def MinMax(X):
     return (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))
 
-asset_list = ['nxt']
-asset_path_list = ['NXTBTC']
+asset_list = ['lsk']
+asset_path_list = ['LSKBTC']
 
 for asset,asset_path in zip(asset_list,asset_path_list):
     ####################################################################
@@ -33,13 +34,13 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     M  = 51
     mu = 1
     gamma = 0.99
-    comission = 0.00
+    comission = 0.002
     ajusted_comission = comission
     np.random.seed(1)
     action_space = [-1,1]
     n_choices = len(action_space)
     scaling = True
-    forward_window_reward = 0 # This is the foward reward window (M^f) used in the case of transaction costs. This reduce the frequency of trades and consider a future window of rewards to generate the labels for the classifier
+    forward_window_reward = 90 # This is the foward reward window (M^f) used in the case of transaction costs. This reduce the frequency of trades and consider a future window of rewards to generate the labels for the classifier
     training_mode = True
     
     #reward_strategy = 'differential_sharpe_ratio' # Use this for the differential sharpe ratio reward function
@@ -67,11 +68,11 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     valid_df = df[train_len+M:train_len+M+valid_len]
     test_df = df[train_len+M+valid_len:]
     length= len(train_df)
-    train_env = BitcoinTradingEnv(train_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling = scaling)
+    train_env = TradingEnv(train_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling = scaling)
     length= len(valid_df)
-    valid_env = BitcoinTradingEnv(valid_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling = scaling)
+    valid_env = TradingEnv(valid_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling = scaling)
     length= len(test_df)
-    test_env = BitcoinTradingEnv(test_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling = scaling)
+    test_env = TradingEnv(test_df, commission=comission, reward_func=reward_strategy, M = M , mu = mu,length = length,scaling = scaling)
     
     ####################################################################
     # Create a supervised dataset to train the TS classifier
@@ -281,7 +282,7 @@ for asset,asset_path in zip(asset_list,asset_path_list):
                 exit()
             # x_val and y_val are only used to monitor the test loss and NOT for training
             batch_size = 128
-            nb_epochs = 150
+            nb_epochs = 40
             
             # class_weight = sklearn.utils.class_weight.compute_class_weight( 'balanced',classes = np.unique(np.argmax(y_train,-1)),y=np.argmax(y_train,-1))
             
