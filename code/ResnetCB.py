@@ -24,8 +24,8 @@ import settings
 def MinMax(X):
     return (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))
 
-asset_list = ['eth']
-asset_path_list = ['ETHUSD']
+asset_list = ['lsk']
+asset_path_list = ['LSKBTC']
 
 for asset,asset_path in zip(asset_list,asset_path_list):
     ####################################################################
@@ -40,7 +40,7 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     action_space = [-1,1]
     n_choices = len(action_space)
     scaling = True
-    forward_window_reward = 60 # This is the foward reward window (M^f) used in the case of transaction costs. This reduce the frequency of trades and consider a future window of rewards to generate the labels for the classifier
+    forward_window_reward = 90 # This is the foward reward window (M^f) used in the case of transaction costs. This reduce the frequency of trades and consider a future window of rewards to generate the labels for the classifier
     training_mode = True
     
     #reward_strategy = 'differential_sharpe_ratio' # Use this for the differential sharpe ratio reward function
@@ -282,7 +282,7 @@ for asset,asset_path in zip(asset_list,asset_path_list):
                 exit()
             # x_val and y_val are only used to monitor the test loss and NOT for training
             batch_size = 128
-            nb_epochs = 150
+            nb_epochs = 40
             
             # class_weight = sklearn.utils.class_weight.compute_class_weight( 'balanced',classes = np.unique(np.argmax(y_train,-1)),y=np.argmax(y_train,-1))
             

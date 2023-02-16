@@ -18,7 +18,7 @@ from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import SubprocVecEnv
 from stable_baselines3.common.callbacks import EvalCallback
 
-def sb_run(train_env,valid_env,asset_name,epochs,model_name = 'PPO',parallelization = False):
+def sb_run(train_env,valid_env,asset_name,epochs,model_name = 'PPO',parallelization = True):
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     LOG_DIR = os.path.join(BASE_DIR,'params')
     time_step_ep = len(train_env.r)

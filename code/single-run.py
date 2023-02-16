@@ -27,8 +27,8 @@ if __name__ == '__main__':
     mu = 1 # mu: number of assetes traded
     decay = 200 # epslon decay for exploration purposes
     n_epoch = 20 # number of RL episodes (here we call epochs)
-    asset_name = 'dash' #This field should be changed to test other assets
-    input_data_file = os.path.join(settings.DATA_DIR, 'Poloniex_DASHUSD_1h.csv')
+    asset_name = 'lsk' #This field should be changed to test other assets
+    input_data_file = os.path.join(settings.DATA_DIR, 'Poloniex_LSKBTC_1h.csv')
     gamma = 0.99 # discount factor used in RL algorithms
     scaling = True # to scale the input date (space state)
     training_mode = True
@@ -61,8 +61,8 @@ if __name__ == '__main__':
     
     
     if training_mode:
-        #sb_run(train_env,valid_env,asset_name,epochs = n_epoch,model_name = 'PPO',parallelization = True)
-        #sb_run(train_env,valid_env,asset_name,epochs = n_epoch,model_name = 'A2C',parallelization = True)
+        sb_run(train_env,valid_env,asset_name,epochs = n_epoch,model_name = 'PPO',parallelization = True)
+        sb_run(train_env,valid_env,asset_name,epochs = n_epoch,model_name = 'A2C',parallelization = True)
         sb_run(train_env,valid_env,asset_name,epochs = n_epoch,model_name = 'DQN',parallelization = True)
         rrl_run(train_env,valid_env,M,comission,mu,T,'_',n_epoch,asset_name)
         cb_model(train_env,valid_env,n_epoch,'_',asset_name)
