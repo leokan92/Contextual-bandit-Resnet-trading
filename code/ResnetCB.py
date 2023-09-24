@@ -369,6 +369,7 @@ for asset,asset_path in zip(asset_list,asset_path_list):
     done = False
     model_pred = keras.models.load_model(os.path.join(settings.SAVE_PARAMS, 'best_model.hdf5'))
     #model_pred = model.model
+    action_space = [0,2] # This is a action space update to match the RL implementations encoding.
     action_prob_hist = []
     delayer_counter = 0
     
