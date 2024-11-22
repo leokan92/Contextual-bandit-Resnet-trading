@@ -2,7 +2,7 @@
 
 ## Paper:
 
-The paper is availabel in Expert Systems with Applications: [Outperforming algorithmic trading reinforcement learning systems: A supervised approach to the cryptocurrency market](https://www.sciencedirect.com/science/article/pii/S0957417422006339)
+The paper is available in Expert Systems with Applications: [Outperforming algorithmic trading reinforcement learning systems: A supervised approach to the cryptocurrency market](https://www.sciencedirect.com/science/article/pii/S0957417422006339)
 
 ## Abstract:
 
