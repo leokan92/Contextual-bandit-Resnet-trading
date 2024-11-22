@@ -1,5 +1,9 @@
 # Outperforming algorithmic trading reinforcement learning systems: a supervised approach in the cryptocurrency market
 
+## Paper:
+
+The paper is availabel in Expert Systems with Applications: [Outperforming algorithmic trading reinforcement learning systems: A supervised approach to the cryptocurrency market](https://www.sciencedirect.com/science/article/pii/S0957417422006339)
+
 ## Abstract:
 
 The interdisciplinary relationship between machine learning and financial markets has long been a theme of great interest among both research communities. Recently, reinforcement learning and deep learning methods gained prominence in the active asset trading task, aiming to achieve outstanding performances compared with classical benchmarks, such as the Buy and Hold strategy. This paper explores both supervised learning and reinforcement learning approaches applied to active asset trading, drawing attention to the benefits of both approaches. This work extends the comparison between the supervised approach and reinforcement learning by using state-of-the-art strategies in both techniques. We propose adopting the Resnet architecture, one of the best deep learning approaches for time-series classification, into the Resnet-LSTM actor (RSLSTM-A). We compare RSLSTM-A against classical and recent reinforcement learning techniques, such as recurrent reinforcement learning, deep Q-network, and advantage actor-critic. We simulated a currency exchange market environment with the price time-series of the Bitcoin, Litecoin, Ethereum, Monero, and Dash cryptocurrencies to run our tests. We show that our approach achieves better overall performance, confirming that supervised learning can outperform reinforcement learning for trading. We also present a graphic representation of the features extracted from the Resnet neural network to identify which type of characteristics each residual block generates.
